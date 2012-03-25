@@ -1,5 +1,3 @@
-/*	$NetBSD: rain.c,v 1.19.6.1 2008/09/18 04:39:58 wrstuden Exp $	*/
-
 /*
  * Copyright (c) 1980, 1993
  *	The Regents of the University of California.  All rights reserved.
@@ -30,18 +28,6 @@
  */
 
 #include <sys/cdefs.h>
-#ifndef lint
-__COPYRIGHT("@(#) Copyright (c) 1980, 1993\
- The Regents of the University of California.  All rights reserved.");
-#endif /* not lint */
-
-#ifndef lint
-#if 0
-static char sccsid[] = "@(#)rain.c	8.1 (Berkeley) 5/31/93";
-#else
-__RCSID("$NetBSD: rain.c,v 1.19.6.1 2008/09/18 04:39:58 wrstuden Exp $");
-#endif
-#endif /* not lint */
 
 /*
  * rain 11/3/1980 EPS/CITHEP
@@ -89,7 +75,7 @@ main(int argc, char **argv)
 			break;
 		default:
 			(void)fprintf(stderr, "Usage: %s [-d delay]\n",
-			    getprogname());
+			    argv[0]);
 			return 1;
 		}
 
@@ -147,7 +133,7 @@ main(int argc, char **argv)
 
 /* ARGSUSED */
 static void
-onsig(int dummy __unused)
+onsig(int dummy)
 {
 	sig_caught = 1;
 }
