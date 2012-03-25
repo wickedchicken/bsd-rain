@@ -55,7 +55,7 @@ main(int argc, char **argv)
 {
 	int x, y, j;
 	long cols, lines;
-	unsigned int delay = 0;
+	unsigned int delay = (90 * 1000);
 	unsigned long val = 0;
 	int ch;
 	char *ep;
@@ -81,6 +81,14 @@ main(int argc, char **argv)
 
 	if (!initscr())
 		errx(0, "couldn't initialize screen");
+
+  if(start_color() == OK){
+    use_default_colors();
+    // init_pair(1, COLOR_BLUE, COLOR_BLACK);
+    init_pair(1, COLOR_BLUE, -1);
+    attrset(COLOR_PAIR(1));
+  }
+
 	cols = COLS - 4;
 	lines = LINES - 4;
 
@@ -131,7 +139,6 @@ main(int argc, char **argv)
 	}
 }
 
-/* ARGSUSED */
 static void
 onsig(int dummy)
 {
