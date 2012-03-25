@@ -17,8 +17,9 @@ run the program as fast as possible, which is probably not what you want.
 
 foreground and background colors are the standard curses colors: black, red,
 green, yellow, blue, magenta, cyan, white, and default. with no options `rain`
-will use 'blue' for foreground and 'default' for background. note that some
-shells treat 'default' as transparent but will fill in 'black.'
+will use 'blue' for foreground and 'default' for background. if your terminal
+has transparency enabled, 'default' will honor that transparency while 'black'
+will not.
 
 -----
 
