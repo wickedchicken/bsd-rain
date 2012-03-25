@@ -2,7 +2,7 @@
 CC=clang
 #CC=gcc
 
-# CFLAGS="-Wall"
+# CFLAGS=-Wall
 CFLAGS=-O2 -Wall
 
 LIBS=-lcurses

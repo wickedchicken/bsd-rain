@@ -43,12 +43,36 @@
 #include <unistd.h>
 #include <errno.h>
 #include <limits.h>
+#include <string.h>
 
 static volatile sig_atomic_t sig_caught = 0;
 
 int main(int, char **);
 static void onsig(int);
 
+int matchcolor(char* color){
+  if(0 == strcasecmp(color,"black")) { return COLOR_BLACK; }
+  if(0 == strcasecmp(color,"red")) { return COLOR_RED; }
+  if(0 == strcasecmp(color,"green")) { return COLOR_GREEN; }
+  if(0 == strcasecmp(color,"yellow")) { return COLOR_YELLOW; }
+  if(0 == strcasecmp(color,"blue")) { return COLOR_BLUE; }
+  if(0 == strcasecmp(color,"magenta")) { return COLOR_MAGENTA; }
+  if(0 == strcasecmp(color,"cyan")) { return COLOR_CYAN; }
+  if(0 == strcasecmp(color,"white")) { return COLOR_WHITE; }
+  return -1;
+}
+
+int setcolors(char* fg, char* bg){
+  if(start_color() == OK){
+    use_default_colors();
+    init_pair(1, matchcolor(fg), matchcolor(bg));
+    bkgdset(COLOR_PAIR(1) | ' ');
+    attrset(COLOR_PAIR(1));
+    return 1;
+  } else {
+    return 0;
+  }
+}
 
 int
 main(int argc, char **argv)
@@ -60,8 +84,10 @@ main(int argc, char **argv)
 	int ch;
 	char *ep;
 	int xpos[5], ypos[5];
+  char *bg = "default";
+  char *fg = "blue";
 
-	while ((ch = getopt(argc, argv, "d:")) != -1)
+	while ((ch = getopt(argc, argv, "d:b:f:")) != -1)
 		switch (ch) {
 		case 'd':
 			val = strtoul(optarg, &ep, 0);
@@ -73,8 +99,14 @@ main(int argc, char **argv)
 				errx(1, "Invalid delay `%s' (1-999)", optarg);
 			delay = (unsigned int)val * 1000;  /* ms -> us */
 			break;
+    case 'f':
+      fg = optarg;
+      break;
+    case 'b':
+      bg = optarg;
+      break;
 		default:
-			(void)fprintf(stderr, "Usage: %s [-d delay]\n",
+			(void)fprintf(stderr, "Usage: %s [-d delay] [-f fground] [-b bground]\n",
 			    argv[0]);
 			return 1;
 		}
@@ -82,12 +114,8 @@ main(int argc, char **argv)
 	if (!initscr())
 		errx(0, "couldn't initialize screen");
 
-  if(start_color() == OK){
-    use_default_colors();
-    // init_pair(1, COLOR_BLUE, COLOR_BLACK);
-    init_pair(1, COLOR_BLUE, -1);
-    attrset(COLOR_PAIR(1));
-  }
+  setcolors(fg,bg);
+  erase();
 
 	cols = COLS - 4;
 	lines = LINES - 4;
